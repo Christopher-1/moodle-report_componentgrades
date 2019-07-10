@@ -137,6 +137,7 @@ function report_componentgrades_add_data(MoodleExcelWorksheet $sheet, array $stu
     // Actual data.
     $lastuser = 0;
     $row = 5;
+    $rubricScores = [];
     foreach ($students as $student) {
         $col = 0;
         $row++;
@@ -155,8 +156,9 @@ function report_componentgrades_add_data(MoodleExcelWorksheet $sheet, array $stu
             if ($method == 'rubric') {
                 // Only rubrics have a "definition".
                 $sheet->write_string($row, $col++, $line->definition);
+                $rubricScores[] = $line->score;
             }
-            $sheet->write_string($row, $col++, $line->remark);
+            $sheet->write_string($row, $col++, $line->remark);//feedback
             if ($col === $gradinginfopos) {
                 if ($method == 'btec') {
                     /* Add the overall assignment grade converted to R,P,M,D
@@ -167,11 +169,15 @@ function report_componentgrades_add_data(MoodleExcelWorksheet $sheet, array $stu
                     /*add the per-criteria feedback */
                     $sheet->set_column($col, $col, 50);
                     $sheet->write_string($row, $col++, $line->commenttext);
+                } elseif ($method == 'rubric'){
+                    $gradeAvg = array_sum($rubricScores)/count($rubricScores);
+                    $sheet->write_string($row, $col++, $gradeAvg);
                 }
                 $sheet->set_column($col, $col, 15);
                 $sheet->write_string($row, $col++, $line->grader);
                 $sheet->set_column($col, $col, 35);
-                $sheet->write_string($row, $col, userdate($line->modified));
+                $sheet->write_string($row, $col, userdate($line->modified));//time graded
+                
             }
         }
     }
