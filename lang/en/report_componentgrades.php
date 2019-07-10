@@ -38,6 +38,7 @@ $string['lastname'] = 'Last name';
 $string['studentid'] = 'Student ID';
 $string['username'] = 'Username';
 $string['score'] = 'Score';
+$string['totalscore'] = 'Total Score';
 $string['definition'] = 'Definition';
 $string['feedback'] = 'Feedback';
 $string['nogradesenteredrubric'] = "No grades have been entered into this assignment's rubric.";
